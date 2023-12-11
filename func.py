@@ -3,17 +3,29 @@ from urllib import response
 import streamlit as st
 import random 
 import time
+import openai
 from openai import OpenAI
 import requests
 from mailjet_rest import Client
 
-mailjet_api_key = st.secrets['MAILJET_API_KEY']
-mailjet_api_secret = st.secrets['MAILJET_API_SECRET']
-mailjet = Client(auth=(mailjet_api_key, mailjet_api_secret))
+
+st.sidebar.header('Required API Keys')
+
+#YOU CAN COMMENT THESE THREE LINES WHEN RUNNING LOCALLY AND CAN MAKE USE OF THE secrets.toml FILE TO ADD YOUR API KEYS
+mailjet_api_key = st.sidebar.text_input("Enter MailJet API's public key", '', type='password')
+mailjet_api_secret = st.sidebar.text_input("Enter MailJet API's private key", '', type='password')
+openai_secret_key = st.sidebar.text_input("Enter OpenAI's API key", '', type='password')
+
+#UNCOMMENT THESE LINES WHEN USING THE secret.toml FILE TO ACCESS YOUR API KEYS
+#mailjet_api_key = st.secrets['MAILJET_API_KEY']
+#mailjet_api_secret = st.secrets['MAILJET_API_SECRET']
+#openai_secret_key = st.secrets['OPENAI_API_KEY']
 
 st.title("GPT_Mail")
+st.markdown("Can be used only after the API Keys have been entered")
 
-client = OpenAI(api_key=st.secrets['OPENAI_API_KEY'])
+mailjet = Client(auth=(mailjet_api_key, mailjet_api_secret))
+client = OpenAI(api_key=openai_secret_key)
 GPT_MODEL = 'gpt-3.5-turbo-0613'
 
 
@@ -107,7 +119,7 @@ for message in st.session_state.messages:
         st.markdown(cont)
 
 
-if prompt := st.chat_input('Hello! What can I help you with?'):
+if prompt := st.chat_input('"Send an email from x to y with the subject as test and content explaining the same"'):
     st.session_state.messages.append({'role':'user','content':prompt})
     with st.chat_message('user'):
         st.markdown(prompt)

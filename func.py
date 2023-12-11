@@ -3,7 +3,6 @@ from urllib import response
 import streamlit as st
 import random 
 import time
-import openai
 from openai import OpenAI
 import requests
 from mailjet_rest import Client

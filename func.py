@@ -12,7 +12,7 @@ mailjet_api_key = st.secrets['MAILJET_API_KEY']
 mailjet_api_secret = st.secrets['MAILJET_API_SECRET']
 mailjet = Client(auth=(mailjet_api_key, mailjet_api_secret))
 
-st.title("Aloo_GPT")
+st.title("GPT_Mail")
 
 client = OpenAI(api_key=st.secrets['OPENAI_API_KEY'])
 GPT_MODEL = 'gpt-3.5-turbo-0613'
@@ -46,12 +46,12 @@ tools = [
         "function": {
             "name": "send_email",
             "description": "Send an email to the specified email with the subject and content",
-            "parameters": {
+            "parameters":{
                 "type": "object",
                 "properties": {
                     "FromEmail": {
                         "type": "string",
-                        "description": "The email address, eg., alan.learning.acc2@gmail.com",
+                        "description": "The email address, eg., alan.learning.acc@gmail.com",
                     },
                     "FromName": {
                         "type": "string",
@@ -67,10 +67,10 @@ tools = [
                     },
                     "Recipients": {
                         "type": "string",
-                        "description": "The recipients' email addresses, eg., alan.learning.acc@gmail.com",
+                        "description": "The recipients' email addresses",
                     }
 
-                }cd,
+                },
                 "required": ["FromEmail", "FromName", "Subject", "Text-part", "Recipients"],
             },
         }
@@ -102,7 +102,10 @@ if 'messages' not in st.session_state:
 
 for message in st.session_state.messages:
     with st.chat_message(message['role']):
-        st.markdown(message['content'])
+        cont = message['content']
+        if message['role']=="assistant":
+            cont = 'Email has been sent from '+ cont['FromEmail'] + ' to ' + cont['Recipients'][0]['Email']  + '  \n' + 'Check inbox.  \n' + 'Content sent:  \n'+ cont['Text-part']
+        st.markdown(cont)
 
 
 if prompt := st.chat_input('Hello! What can I help you with?'):
@@ -121,7 +124,9 @@ if prompt := st.chat_input('Hello! What can I help you with?'):
 
         result = mailjet.send.create(data=em)
         
-        cont = 'Email has been sent. Check inbox.  \n' + 'Content sent:  \n'+ em['Text-part']
+        
+        cont = 'Email has been sent from '+ em['FromEmail'] + ' to ' + em['Recipients'][0]['Email']  + '  \n' + 'Check inbox.  \n' + 'Content sent:  \n'+ em['Text-part']
+        
         message_placeholder.markdown(cont)
 
-    st.session_state.messages.append({'role':'assistant','content':cont})
+    st.session_state.messages.append({'role':'assistant','content':em})

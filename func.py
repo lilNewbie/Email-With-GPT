@@ -32,7 +32,7 @@ GPT_MODEL = 'gpt-3.5-turbo-0613'
 def chat_completion_request(messages, tools=None, tool_choice=None, model=GPT_MODEL):
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + st.secrets['OPENAI_API_KEY'],
+        "Authorization": "Bearer " + openai_secret_key,
     }
     json_data = {"model": model, "messages": messages}
     if tools is not None:

@@ -68,7 +68,7 @@ Add the required API keys
 ![Screenshot (1820) - copy](https://github.com/lilNewbie/Email-With-GPT/assets/90834922/6a635d7f-6478-4500-a9be-7684a3437f7d)
 
 Type in the prompt and wait for the response
-![Screenshot (1819) - copy](https://github.com/lilNewbie/Email-With-GPT/assets/90834922/a25b22c8-2805-48e3-9023-1e36386af721)
+![Screenshot (1819) - copy](https://github.com/lilNewbie/Email-With-GPT/assets/90834922/01e367c8-922a-42c7-af33-1c96f11eaf57)
 
 Check email and voila!
 ![Screenshot (1821) - copy](https://github.com/lilNewbie/Email-With-GPT/assets/90834922/8111e7c0-ef59-4f83-86cb-324dd9e7603f)
